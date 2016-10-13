@@ -1,35 +1,45 @@
 import React from 'react';
 import Goal from './Goal';
 import Box from './Box';
-import {connect} from 'react-redux';
-import axios from 'axios';
+import { connect } from 'react-redux';
+//import { fetchData, insertGoal } from '../actions/actionCreators';
+const url = 'http://localhost:8080/api/goals';
 
-
-connect(state => ({data: state.example.data}))
+//connect(state => ({data: state.example.data}))
 class Goals extends React.Component {
 	constructor(props){
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.props.fetchData(url);
 	}
-	
+
 	handleSubmit(e){
+		
 		e.preventDefault();
-		
-		// Send a POST request
-		axios({
-		  method: 'post',
-		  url: 'http://localhost:8080/goals',
-		  data: {
-			description: this.refs.description.value
-		  }
-		});
-		
-		//this.props.addGoal(goalId, description);
+		this.props.insertGoal(url, this.refs.description.value);
+		this.props.fetchData(url);
 		this.refs.goalForm.reset();
 		
 	}
 	
+	
+	//componentWillReceiveProps(nextProps) {
+		//this.props.dispatch ( fetchData(url) );
+          //if (!shallowEqual(nextProps, this.props)) {
+           // if (shouldUpdateStateProps) {
+           //   this.updateStateProps(nextProps);
+           // }
+
+          //  if (shouldUpdateDispatchProps) {
+          //    this.updateDispatchProps(nextProps);
+          //  }
+
+          //  this.updateState(nextProps);
+         // }
+       // }
+	
 	render(){
+		
 		return (
 			<div className='container'>
 
@@ -43,8 +53,8 @@ class Goals extends React.Component {
 					</form>
 				  </div>
   
-				{this.props.example.data.map((emp, i) => 
-				<Box {... this.props} key={i} i={i} emp={emp} />
+				{this.props.example.map((emp, i) => 
+				<Box key={i} i={i} emp={emp} />
 				)}
 						
 				 </div>	
@@ -52,5 +62,11 @@ class Goals extends React.Component {
 		);
 	}
 };
+
+/*export default connect( (state) => {
+	return {
+		example: state.example.data
+	}
+})(Goals);*/
 
 export default Goals;

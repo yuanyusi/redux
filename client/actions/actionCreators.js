@@ -30,20 +30,126 @@ export function fetchData(url) {
 			responseType: 'json'
 		})
 			.then(function(response) {
-				//dispatch(receiveData(response.data._embedded.employees));
-				dispatch(receiveData(response.data));
+				dispatch(receiveData(response.data._embedded.goals));
 			})
 			.catch(function(response){
-				//dispatch(receiveError(response.data._embedded.employees));
-				dispatch(receiveError(response.data));
+				dispatch(receiveError(response.data._embedded.goals));
 				dispatch(pushState(null,'/error'));
 			})
 	}
 };
 
+export function insertGoal(url, description) {
+	return function(dispatch) {
+		axios({
+		  method: 'post',
+		  url: url,
+		  json: true,
+		  data: {
+			description: description
+		  }
+		})
+			.then(function(response) {
+				dispatch(addGoal(response.data));	
+			})
+			.catch(function(response){
+				//dispatch(receiveError(response.data._embedded.goals));
+				dispatch(pushState(null,'/error'));
+			})
+		
+	}
+};
 
+// add Goal
+function addGoal(json){
+	return{
+		type: 'ADD_GOAL',
+		json
+	}
+}
 
+export function removeGoal(url, id) {
+	return function(dispatch) {
+		
+		axios({
+			method: 'delete',
+			url: url + '/' + id,
+			data: null,
+			withCredentials: true,
+			params: {
+			}
+		})
+		dispatch(deleteGoal(id));	
+	}
+};
 
+export function successesGoal(url, id, index) {
+	return function(dispatch) {
+		
+		axios({
+			method: 'put',
+			url: url + '/data/' + id,
+			json: true,
+			data: null,
+		  /*data: {
+			updatedAt: new Date(),
+		  },*/
+			withCredentials: true,
+			params: {
+				
+			}
+		})
+			.then(function(response) {
+				dispatch(successGoal(id, index, response.data));
+			})
+			.catch(function(response){
+				//dispatch(receiveError(response.data._embedded.goals));
+				dispatch(pushState(null,'/error'));
+			})
+		//dispatch(successGoal(id, index));	
+	}
+};
+
+// successes
+function successGoal(id, index, json){
+	return{
+		type: 'SUCCESS_GOAL',
+		id,
+		index,
+		json
+	}
+}
+
+export function failuresGoal(url, id) {
+	return function(dispatch) {
+		
+		axios({
+			method: 'put',
+			url: url + '/failures/' + id,
+			data: null,
+			withCredentials: true,
+			params: {
+			}
+		})
+		dispatch(failedGoal(id));	
+	}
+};
+
+// delete Goal
+function deleteGoal(id){
+	return{
+		type: 'DELETE_GOAL',
+		id
+	}
+}
+
+// failures
+function failedGoal(id){
+	return{
+		type: 'FAILED_GOAL',
+		id
+	}
+}
 
 // increment
 export function increment(index){

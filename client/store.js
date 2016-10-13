@@ -20,8 +20,7 @@ const defaultState = {
 };
 
 const enhancers = compose(
-   // applyMiddleware(thunk.withExtraArgument('http://localhost:8080/api/employees'), router),
-    applyMiddleware(thunk.withExtraArgument('http://localhost:8080/goals'), router),
+    applyMiddleware(thunk.withExtraArgument('http://localhost:8080/api/goals'), router),
 	window.devToolsExtension ? window.devToolsExtension() : f => f
 );
 

@@ -16,11 +16,11 @@ var webpackHotMiddleware = require("webpack-hot-middleware");
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
   hot: true,
+  historyApiFallback: true,
   filename: 'bundle.js',
   stats: {
     colors: true,
   },
- // historyApiFallback: true,
   publicPath: config.output.publicPath
 }));
 
