@@ -1,6 +1,4 @@
 import React from 'react';
-import { fetchData, removeGoal, successesGoal, failuresGoal} from '../actions/actionCreators';
-import { connect } from 'react-redux';
 const url = 'http://localhost:8080/api/goals';
 
 class Box extends React.Component {
@@ -16,26 +14,23 @@ class Box extends React.Component {
 	handleDelete(e){
 		
 		e.preventDefault();
-		this.props.dispatch ( removeGoal(url, this.id) );
-		this.props.dispatch ( fetchData(url) );
+		this.props.removeGoal(url, this.id, this.props.i);
 	}
 	
 	handleSuccesses(e){
 		
 		e.preventDefault();
-		this.props.dispatch ( successesGoal(url, this.id, this.props.i) );
-		this.props.dispatch ( fetchData(url) );
+		this.props.successesGoal(url, this.id, this.props.i);
 	}
 	
 	handleFailures(e){
 		
 		e.preventDefault();
-		this.props.dispatch ( failuresGoal(url, this.id) );
-		this.props.dispatch ( fetchData(url) );
+		this.props.failuresGoal(url, this.id, this.props.i);
 	}
 	
+	
 	render() {
-		//this.props.dispatch ( fetchData(url) );
 		var emp = this.props.emp;
 		var d = emp.createdAt.slice(0, 10).split('-');   
         var formatDate = d[1] +'/'+ d[2] +'/'+ d[0]; // 10/30/2010
@@ -75,9 +70,4 @@ class Box extends React.Component {
 	}
 };
 
-export default connect( (state) => {
-	return {
-		example: state.example.data
-	}
-})(Box);
-//export default Box;
+export default Box;

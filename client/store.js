@@ -3,8 +3,6 @@ import { syncHistoryWithStore, routerMiddleware} from 'react-router-redux';
 import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 
-import createBrowserHistory from 'history';
-
 // import the root reducer
 import rootReducer from './reducers/index';
 

@@ -53,7 +53,7 @@ export function insertGoal(url, description) {
 				dispatch(addGoal(response.data));	
 			})
 			.catch(function(response){
-				//dispatch(receiveError(response.data._embedded.goals));
+				dispatch(receiveError(response.data));
 				dispatch(pushState(null,'/error'));
 			})
 		
@@ -68,7 +68,7 @@ function addGoal(json){
 	}
 }
 
-export function removeGoal(url, id) {
+export function removeGoal(url, id, index) {
 	return function(dispatch) {
 		
 		axios({
@@ -79,9 +79,18 @@ export function removeGoal(url, id) {
 			params: {
 			}
 		})
-		dispatch(deleteGoal(id));	
+		dispatch(deleteGoal(id, index));	
 	}
 };
+
+// delete Goal
+function deleteGoal(id, index){
+	return{
+		type: 'DELETE_GOAL',
+		id,
+		index
+	}
+}
 
 export function successesGoal(url, id, index) {
 	return function(dispatch) {
@@ -103,10 +112,9 @@ export function successesGoal(url, id, index) {
 				dispatch(successGoal(id, index, response.data));
 			})
 			.catch(function(response){
-				//dispatch(receiveError(response.data._embedded.goals));
+				dispatch(receiveError(response.data));
 				dispatch(pushState(null,'/error'));
 			})
-		//dispatch(successGoal(id, index));	
 	}
 };
 
@@ -120,7 +128,7 @@ function successGoal(id, index, json){
 	}
 }
 
-export function failuresGoal(url, id) {
+export function failuresGoal(url, id, index) {
 	return function(dispatch) {
 		
 		axios({
@@ -131,25 +139,26 @@ export function failuresGoal(url, id) {
 			params: {
 			}
 		})
-		dispatch(failedGoal(id));	
+			.then(function(response) {
+				dispatch(failedGoal(id, index, response.data));
+			})
+			.catch(function(response){
+				dispatch(receiveError(response.data));
+				dispatch(pushState(null,'/error'));
+			})
 	}
 };
 
-// delete Goal
-function deleteGoal(id){
+// failures
+function failedGoal(id, index, json){
 	return{
-		type: 'DELETE_GOAL',
-		id
+		type: 'FAILED_GOAL',
+		id,
+		index,
+		json
 	}
 }
 
-// failures
-function failedGoal(id){
-	return{
-		type: 'FAILED_GOAL',
-		id
-	}
-}
 
 // increment
 export function increment(index){

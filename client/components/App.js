@@ -7,7 +7,6 @@ function mapStateToProps(state){
 	return{
 		posts: state.posts,
 		comments: state.comments,
-		//goals: state.example.data,
 		example: state.example.data
 	}
 }

@@ -16,14 +16,11 @@ import Targets from './components/Targets';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { reduxReactRouter, routerStateReducer, ReduxRouter } from 'redux-react-router';
-import createBrowserHistory from 'history';
 import store, { history } from './store';
-
-import configureStore from './store';
 
 const router = (
 	<Provider store={store}>
-		<Router history={browserHistory}>
+		<Router history={history}>
 			<Route path="/" component={App}>
 				<IndexRoute component={Goals}> </IndexRoute>
 				<Route path="/view/:postId" component={Single}></Route>
